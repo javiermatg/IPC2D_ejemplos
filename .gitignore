@@ -1,0 +1,25 @@
+# ==========================================
+// ARCHIVOS TEMPORALES Y DE COMPILACIÓN EN .NET
+# ==========================================
+
+# Carpetas de salida compilada (ejecutables y binarios)
+**/bin/
+**/obj/
+
+# Archivos de usuario y configuraciones locales
+*.user
+*.userosscache
+*.sln.docstates
+
+# Configuración de entornos y secretos locales
+appsettings.Development.json
+appsettings.Local.json
+
+# Carpetas de IDEs (VS Code, Visual Studio, JetBrains Rider)
+.vscode/
+.vs/
+.idea/
+
+# Sistemas operativos
+.DS_Store
+Thumbs.db
