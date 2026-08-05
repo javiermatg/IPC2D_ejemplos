@@ -6,6 +6,7 @@ Este manual proporciona una guía paso a paso para configurar la variable de ent
 
 ## Tabla de Contenidos
 
+
 1. [Requisitos Previos](#1-requisitos-previos)
 2. [Configuración de la Variable de Entorno PATH](#2-configuración-de-la-variable-de-entorno-path)
 3. [Comandos Esenciales de la .NET CLI](#3-comandos-esenciales-de-la-net-cli)
