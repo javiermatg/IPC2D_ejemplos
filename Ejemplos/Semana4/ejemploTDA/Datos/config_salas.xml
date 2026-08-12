@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Archivo de configuración del sistema ChapinCine.
+
+  Estructura:
+    <sala>        define una sala; el atributo filas y columnas de la
+                  etiqueta <nombre> determina sus dimensiones.
+    <fila>        contenido de cada fila de la malla, delimitado por
+                  comillas. Su longitud debe coincidir con el atributo
+                  columnas.
+    <asientoVIP>  asiento con costo adicional, ubicado por fila y
+                  columna. El valor de la etiqueta es el recargo.
+    <cliente>     define un cliente; el atributo tipo determina la clase
+                  concreta a instanciar. El atributo presupuesto aplica
+                  únicamente cuando el tipo es ClientePremium.
+
+  Caracteres válidos dentro de <fila>:
+    *             estructura o pasillo, no reservable
+    (espacio)     asiento disponible
+    O             asiento ocupado
+    E             espacio accesible
+-->
+<configuracion>
+
+    <listaSalas>
+
+        <sala>
+            <nombre filas="8" columnas="12">Sala Premier</nombre>
+            <fila numero="1">"**        **"</fila>
+            <fila numero="2">"**        **"</fila>
+            <fila numero="3">"** OO  OO **"</fila>
+            <fila numero="4">"**        **"</fila>
+            <fila numero="5">"*E        E*"</fila>
+            <fila numero="6">"**  O  O  **"</fila>
+            <fila numero="7">"**        **"</fila>
+            <fila numero="8">"************"</fila>
+            <asientoVIP fila="4" columna="6">50</asientoVIP>
+            <asientoVIP fila="4" columna="7">50</asientoVIP>
+            <asientoVIP fila="6" columna="6">75</asientoVIP>
+        </sala>
+
+        <sala>
+            <nombre filas="5" columnas="8">Sala Vintage</nombre>
+            <fila numero="1">"*      *"</fila>
+            <fila numero="2">"* OO O *"</fila>
+            <fila numero="3">"*E    E*"</fila>
+            <fila numero="4">"*      *"</fila>
+            <fila numero="5">"********"</fila>
+            <asientoVIP fila="1" columna="4">30</asientoVIP>
+        </sala>
+
+    </listaSalas>
+
+    <clientes>
+
+        <cliente>
+            <nombre tipo="ClientePremium" presupuesto="200">Ana Lopez</nombre>
+        </cliente>
+
+        <cliente>
+            <nombre tipo="ClienteEstandar">Carlos Ruiz</nombre>
+        </cliente>
+
+        <cliente>
+            <nombre tipo="ClientePremium" presupuesto="40">Maria Gomez</nombre>
+        </cliente>
+
+        <cliente>
+            <nombre tipo="ClienteEstandar">Jorge Perez</nombre>
+        </cliente>
+
+    </clientes>
+
+</configuracion>

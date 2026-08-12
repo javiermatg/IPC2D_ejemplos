@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Segundo archivo de configuración. Se carga después del anterior para
+  verificar el comportamiento de actualización del sistema:
+
+    Sala Premier   ya existe, por lo que se actualizan sus dimensiones.
+    Sala IMAX      no existe, por lo que se inserta.
+    Carlos Ruiz    ya existe y cambia de tipo, por lo que se reemplaza
+                   el objeto completo.
+    Pedro Invalido declara un tipo no reconocido; el registro se omite y
+                   se reporta como advertencia.
+-->
+<configuracion>
+
+    <listaSalas>
+
+        <sala>
+            <nombre filas="10" columnas="14">Sala Premier</nombre>
+            <fila numero="1">"**          **"</fila>
+            <fila numero="2">"**          **"</fila>
+            <fila numero="3">"** OO    OO **"</fila>
+            <fila numero="4">"**          **"</fila>
+            <fila numero="5">"*E          E*"</fila>
+            <fila numero="6">"**   O  O   **"</fila>
+            <fila numero="7">"**          **"</fila>
+            <fila numero="8">"**  O    O  **"</fila>
+            <fila numero="9">"**          **"</fila>
+            <fila numero="10">"**************"</fila>
+            <asientoVIP fila="5" columna="7">60</asientoVIP>
+        </sala>
+
+        <sala>
+            <nombre filas="6" columnas="10">Sala IMAX</nombre>
+            <fila numero="1">"*        *"</fila>
+            <fila numero="2">"* OO  OO *"</fila>
+            <fila numero="3">"*        *"</fila>
+            <fila numero="4">"*E      E*"</fila>
+            <fila numero="5">"*   OO   *"</fila>
+            <fila numero="6">"**********"</fila>
+            <asientoVIP fila="3" columna="5">90</asientoVIP>
+        </sala>
+
+    </listaSalas>
+
+    <clientes>
+
+        <cliente>
+            <nombre tipo="ClientePremium" presupuesto="500">Carlos Ruiz</nombre>
+        </cliente>
+
+        <cliente>
+            <nombre tipo="ClienteEstandar">Lucia Morales</nombre>
+        </cliente>
+
+        <cliente>
+            <nombre tipo="ClienteGalactico" presupuesto="9999">Pedro Invalido</nombre>
+        </cliente>
+
+    </clientes>
+
+</configuracion>
