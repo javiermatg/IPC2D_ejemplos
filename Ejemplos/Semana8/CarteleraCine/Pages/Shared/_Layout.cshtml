@@ -1,0 +1,55 @@
+@*  =========================================================================
+    ARCHIVO:   Pages/Shared/_Layout.cshtml
+
+    QUE ES:    La plantilla compartida por TODAS las paginas del sitio.
+               Aqui vive el esqueleto HTML completo: DOCTYPE, head, encabezado,
+               menu y pie.
+
+    POR QUE
+    EXISTE:    Para no repetir el mismo esqueleto en cada pagina. Si manana se
+               agrega una opcion al menu, se escribe una vez aqui y aparece en
+               las tres paginas al mismo tiempo.
+
+    QUE SE
+    HACE AQUI: Todo lo que es igual en el sitio entero. Lo que cambia de una
+               pagina a otra NO va aqui: se inserta donde esta @RenderBody().
+
+    OJO:       Este archivo esta en Pages/Shared. Razor busca ahi las piezas
+               que se comparten entre paginas; el guion bajo del nombre indica
+               que no es una pagina navegable.
+    ========================================================================= *@
+
+<!DOCTYPE html>                                     @* declara que se usen las reglas modernas de interpretacion *@
+<html lang="es">                                    @* lang avisa que el contenido esta en espanol *@
+<head>
+    @* El head es la ficha tecnica del documento: nada de esto se ve en pantalla. *@
+    <meta charset="UTF-8">                          @* sin esta linea las tildes y la enie se ven rotas *@
+    <meta name="viewport" content="width=device-width, initial-scale=1">   @* que se adapte a la pantalla del celular *@
+    <title>@ViewData["Title"] - Cartelera</title>   @* ViewData transporta el titulo que puso cada pagina *@
+    <link rel="stylesheet" href="/css/estilos.css"> @* hoja de estilos externa; vive en wwwroot/css *@
+</head>
+<body>
+
+    <header class="encabezado">                     @* header: encabezado del sitio (etiqueta semantica) *@
+        <a class="marca" href="/">Cine<span>USAC</span></a>   @* enlace de regreso al inicio *@
+
+        <nav class="menu">                          @* nav: bloque de navegacion (etiqueta semantica) *@
+            <ul>                                    @* un menu no es mas que una lista de enlaces *@
+                <li><a href="/">Cartelera</a></li>
+                <li><a href="/Nueva">Agregar pelicula</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenido">                        @* main: contenido principal, solo puede haber uno por pagina *@
+        @* AQUI se inserta el contenido de Index, Detalle o Nueva, segun la URL pedida. *@
+        @RenderBody()
+    </main>
+
+    <footer class="pie">                            @* footer: pie de pagina (etiqueta semantica) *@
+        @* C# incrustado dentro del HTML: el ano se calcula en el servidor cada vez. *@
+        <p>IPC2 &middot; Ejemplo de clase &middot; @DateTime.Now.Year</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+/* ===========================================================================
+   ARCHIVO:   wwwroot/css/estilos.css
+
+   QUE ES:    La hoja de estilos de TODO el sitio. Un archivo de texto plano,
+              sin una sola etiqueta HTML adentro.
+
+   POR QUE
+   EXISTE:    Para separar el contenido de la presentacion. El HTML dice que
+              es cada cosa; este archivo dice como se ve. Al estar aparte, un
+              solo archivo controla las tres paginas y el navegador lo guarda
+              en cache, asi que se descarga una vez.
+
+   POR QUE
+   ESTA EN
+   wwwroot:   Es la unica carpeta publica del proyecto. Lo que este fuera de
+              ella el navegador no lo puede descargar.
+
+   QUE SE
+   HACE AQUI: Colores, tamanos, espaciado y acomodo. Ninguna decision de
+              contenido: si algo debe aparecer o no, eso se decide en Razor.
+
+   COMO SE
+   ORGANIZA:  De lo general a lo particular. Primero las variables, luego los
+              elementos base y al final cada componente. Si busca algo, siga
+              los numeros de las secciones.
+   =========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES
+   Se declaran en :root, el selector de la raiz del documento, para que
+   queden disponibles en toda la pagina. Cambiar un color aqui lo cambia
+   en todo el sitio.
+   -------------------------------------------------------------------------- */
+:root {
+    --tinta: #1f1b2e;              /* color del texto principal */
+    --suave: #6b6480;              /* texto secundario */
+    --acento: #c2410c;             /* color de la marca y los botones */
+    --fondo: #f7f6fa;              /* fondo general de la pagina */
+    --tarjeta: #ffffff;            /* fondo de las tarjetas */
+    --borde: #e0dbec;
+    --radio: 10px;                 /* redondeo de esquinas, para no repetirlo */
+    --espacio: 16px;               /* separacion base */
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   El selector de etiqueta aplica a TODOS los elementos de ese tipo.
+   -------------------------------------------------------------------------- */
+body {
+    margin: 0;                                     /* el navegador trae un margen propio: se quita */
+    font-family: "Segoe UI", Arial, sans-serif;    /* si la primera fuente no existe, usa la siguiente */
+    background: var(--fondo);                      /* var() lee el valor declarado arriba */
+    color: var(--tinta);                           /* este color lo HEREDAN los elementos hijos */
+    line-height: 1.55;
+}
+
+h1 { font-size: 2rem; margin-bottom: 8px; }        /* el tamano se define aqui, no con la etiqueta */
+h2 { font-size: 1.25rem; }
+
+a { color: var(--acento); }                        /* selector de etiqueta: todos los enlaces */
+a:hover { text-decoration: none; }                 /* pseudo-clase: solo cuando el cursor esta encima */
+
+/* --------------------------------------------------------------------------
+   3. ENCABEZADO Y MENU
+   -------------------------------------------------------------------------- */
+.encabezado {                                      /* el punto indica que es una CLASE */
+    display: flex;                                 /* acomoda los hijos en fila */
+    justify-content: space-between;                /* uno a cada extremo */
+    align-items: center;                           /* centrados verticalmente */
+    padding: var(--espacio) 32px;                  /* relleno interno: arriba-abajo, izquierda-derecha */
+    background: var(--tinta);
+}
+
+.marca {
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: bold;
+    text-decoration: none;                         /* quita el subrayado del enlace */
+}
+
+.marca span { color: var(--acento); }              /* descendiente: el span que este DENTRO de .marca */
+
+.menu ul {
+    list-style: none;                              /* quita las vinetas de la lista */
+    display: flex;                                 /* los <li> quedan en fila, no uno abajo del otro */
+    gap: 24px;                                     /* separacion entre elementos */
+    margin: 0;
+    padding: 0;
+}
+
+.menu a {
+    color: #e7e3f2;
+    text-decoration: none;
+}
+
+.menu a:hover { color: var(--acento); }
+
+/* --------------------------------------------------------------------------
+   4. CONTENIDO
+   -------------------------------------------------------------------------- */
+.contenido {
+    max-width: 1000px;                             /* evita lineas larguisimas en pantallas grandes */
+    margin: 32px auto;                             /* auto a los lados = centrado horizontal */
+    padding: 0 24px;
+}
+
+.entrada { color: var(--suave); }
+
+/* --------------------------------------------------------------------------
+   5. REJILLA DE TARJETAS
+   -------------------------------------------------------------------------- */
+.rejilla {
+    display: grid;                                                  /* modulo Grid de CSS */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));   /* tantas columnas como quepan */
+    gap: 24px;
+}
+
+.tarjeta {
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);                /* borde: la tercera capa del modelo de caja */
+    border-radius: var(--radio);
+    overflow: hidden;                              /* recorta la imagen a las esquinas redondeadas */
+}
+
+.tarjeta img {
+    width: 100%;                                   /* la imagen ocupa todo el ancho de la tarjeta */
+    height: auto;                                  /* el alto se ajusta solo y no se deforma */
+    display: block;                                /* quita el espacio en blanco de abajo */
+}
+
+.tarjeta-texto { padding: var(--espacio); }        /* padding: relleno entre el borde y el contenido */
+
+.tarjeta h2 { margin: 0 0 4px 0; font-size: 1.05rem; }
+
+.etiqueta {
+    display: inline-block;
+    background: #fbede3;
+    color: var(--acento);
+    font-size: 0.78rem;
+    padding: 2px 10px;
+    border-radius: 999px;                          /* redondeo exagerado: forma de pildora */
+    margin: 0 0 8px 0;
+}
+
+.datos { color: var(--suave); font-size: 0.85rem; margin: 0 0 12px 0; }
+
+/* --------------------------------------------------------------------------
+   6. BOTONES
+   -------------------------------------------------------------------------- */
+.boton {
+    display: inline-block;
+    background: var(--acento);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radio);
+    font-size: 0.9rem;
+    cursor: pointer;                               /* el cursor cambia a mano encima del boton */
+}
+
+.boton:hover { background: #9a330a; }              /* mismo boton, estado con el cursor encima */
+
+/* --------------------------------------------------------------------------
+   7. FICHA DE DETALLE
+   -------------------------------------------------------------------------- */
+.ficha {
+    display: flex;
+    gap: 32px;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 24px;
+}
+
+.ficha img { border-radius: var(--radio); }
+
+.datos-tabla { border-collapse: collapse; margin: 16px 0; }        /* junta los bordes en una sola linea */
+.datos-tabla th,
+.datos-tabla td {                                                  /* dos selectores comparten la misma regla */
+    text-align: left;
+    padding: 6px 24px 6px 0;
+    border-bottom: 1px solid var(--borde);
+}
+.datos-tabla th { color: var(--suave); font-weight: normal; }
+
+/* --------------------------------------------------------------------------
+   8. FORMULARIO
+   -------------------------------------------------------------------------- */
+.formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;                /* dos columnas del mismo ancho */
+    gap: var(--espacio);
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.campo { display: flex; flex-direction: column; }  /* etiqueta arriba, control abajo */
+.campo-ancho { grid-column: 1 / -1; }              /* este campo ocupa las dos columnas */
+
+.campo label { font-size: 0.85rem; color: var(--suave); margin-bottom: 4px; }
+
+/* Selector por ATRIBUTO: aplica solo a los input de ese type. */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    padding: 8px 10px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    font-family: inherit;                          /* hereda la fuente del body; si no, usan la del sistema */
+    font-size: 0.95rem;
+}
+
+input:focus, select:focus, textarea:focus {        /* pseudo-clase: cuando el campo esta seleccionado */
+    outline: 2px solid var(--acento);
+}
+
+.formulario .boton { grid-column: 1 / -1; justify-self: start; }   /* el boton no ocupa todo el ancho */
+
+.error {
+    background: #fdeaea;
+    color: #a11;
+    padding: 12px var(--espacio);
+    border-radius: var(--radio);
+}
+
+/* --------------------------------------------------------------------------
+   9. TABLA DE LISTADO Y PIE
+   -------------------------------------------------------------------------- */
+.listado {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+}
+
+.listado th, .listado td {
+    text-align: left;
+    padding: 10px var(--espacio);
+    border-bottom: 1px solid var(--borde);
+}
+
+.listado thead th { background: #f0edf7; font-size: 0.85rem; }
+
+.vacio, .aviso { color: var(--suave); }
+
+.pie {
+    text-align: center;
+    color: var(--suave);
+    font-size: 0.85rem;
+    padding: 24px;
+}

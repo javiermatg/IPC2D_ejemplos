@@ -1,0 +1,75 @@
+@page
+@model DetalleModel
+
+@*  =========================================================================
+    ARCHIVO:   Pages/Detalle.cshtml
+
+    QUE ES:    La ficha completa de UNA pelicula. Responde en  /Detalle?id=2
+
+    POR QUE
+    EXISTE:    Para mostrar dos cosas que el listado no alcanza a ensenar:
+               como una pagina recibe un dato por la URL, y por que SIEMPRE
+               hay que prever el caso de que ese dato no exista.
+
+    QUE SE
+    HACE AQUI: Preguntar si la busqueda encontro algo y, segun la respuesta,
+               dibujar la ficha o un aviso. Nada mas.
+
+    LAS DIRECTIVAS:
+       @page              hace que la pagina exista en /Detalle
+       @model DetalleModel dice que la clase DetalleModel es la que preparo
+                          los datos: sin esta linea, @Model.Pelicula no compila
+    ========================================================================= *@
+
+@{
+    // Operador condicional de C#: si no hay pelicula, el titulo dice otra cosa.
+    ViewData["Title"] = Model.Pelicula == null ? "No encontrada" : Model.Pelicula.Titulo;
+}
+
+@* Programar defensivamente: el usuario puede escribir /Detalle?id=999 a mano. *@
+@if (Model.Pelicula == null)
+{
+    <section class="aviso">
+        <h1>Esa pelicula no existe</h1>
+        <p>Revise el enlace o vuelva a la <a href="/">cartelera</a>.</p>
+    </section>
+}
+else
+{
+    <article class="ficha">
+
+        <img src="/img/@Model.Pelicula.Poster" alt="Afiche de @Model.Pelicula.Titulo" width="300" height="420">
+
+        <div>
+            <h1>@Model.Pelicula.Titulo</h1>
+            <p class="etiqueta">@Model.Pelicula.Genero</p>
+
+            @* Tabla: datos organizados en filas y columnas. Nunca para maquetar la pagina. *@
+            <table class="datos-tabla">
+                <tbody>
+                    <tr>
+                        @* th con scope="row": encabezado de FILA, no de columna. *@
+                        <th scope="row">Duracion</th>
+                        <td>@Model.Pelicula.DuracionEnTexto</td>   @* td: celda de dato *@
+                    </tr>
+                    <tr>
+                        <th scope="row">Clasificacion</th>
+                        <td>@Model.Pelicula.Clasificacion</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Codigo interno</th>
+                        <td>@Model.Pelicula.Id</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Sinopsis</h2>
+            @* Razor escapa el texto automaticamente: si la sinopsis trajera *@
+            @* etiquetas HTML, se verian como texto y no se ejecutarian.     *@
+            <p>@Model.Pelicula.Sinopsis</p>
+
+            <a class="boton" href="/">Volver a la cartelera</a>
+        </div>
+
+    </article>
+}

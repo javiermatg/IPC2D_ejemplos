@@ -1,0 +1,38 @@
+@using CarteleraCine
+@using CarteleraCine.Modelos
+@namespace CarteleraCine.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@*  =========================================================================
+    ARCHIVO:   Pages/_ViewImports.cshtml
+
+    QUE ES:    Un archivo de directivas comunes. No se muestra nunca: no
+               produce ni una linea de HTML.
+
+    POR QUE
+    EXISTE:    Todo lo que se declara aqui se aplica automaticamente a TODAS
+               las paginas de la carpeta Pages. Sin el habria que repetir
+               estas cuatro lineas al inicio de cada .cshtml.
+
+    QUE HACE
+    CADA LINEA:
+       @using CarteleraCine
+       @using CarteleraCine.Modelos
+               Dan acceso a las clases del proyecto (Pelicula, Cartelera,
+               ListaPeliculas) sin escribir la ruta completa cada vez.
+
+       @namespace CarteleraCine.Pages
+               Espacio de nombres que tendran las clases que Razor genera a
+               partir de cada pagina.
+
+       @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+               Habilita las ayudas de ASP.NET. La mas importante aqui: agrega
+               sola una proteccion oculta a los formularios con method="post"
+               para que nadie pueda enviarlos desde otro sitio.
+
+    REGLA IMPORTANTE:
+               Una directiva de Razor debe ir SOLA en su linea. Si se le pone
+               un comentario al lado, el compilador lo lee como parte de la
+               directiva y falla. Por eso todos los comentarios de este
+               archivo estan aqui abajo y no a la derecha.
+    ========================================================================= *@

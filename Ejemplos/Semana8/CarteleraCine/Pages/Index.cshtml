@@ -1,0 +1,79 @@
+@page
+@model IndexModel
+
+@*  =========================================================================
+    ARCHIVO:   Pages/Index.cshtml
+
+    QUE ES:    La pagina de inicio: el listado de peliculas en cartelera.
+               Responde en la direccion raiz del sitio, es decir  /
+
+    POR QUE
+    EXISTE:    Es la vista principal del ejemplo y la que demuestra lo mas
+               importante de Razor: que el HTML no se escribe a mano, sino que
+               lo genera el servidor recorriendo los datos.
+
+    QUE SE
+    HACE AQUI: Solo mostrar. No se busca, no se calcula, no se valida nada:
+               eso ya lo hizo Index.cshtml.cs.
+
+    LAS DOS DIRECTIVAS DE ARRIBA:
+       @page   Obligatoria y debe ser la PRIMERA. Es la que convierte este
+               archivo en una pagina alcanzable por URL. Sin ella, Razor lo
+               trata como una pieza suelta y el navegador responde 404.
+
+       @model IndexModel
+               Declara CUAL clase preparo los datos. Es lo que hace que
+               @Model exista y que @Model.Peliculas sea reconocido. Si se
+               escribe mal, aparece el error "no contiene una definicion para".
+    ========================================================================= *@
+
+@{
+    ViewData["Title"] = "Cartelera";   // el _Layout lo usa para el <title> de la pestana
+}
+
+@* Un bloque @{ } contiene C# normal: sirve para varias instrucciones seguidas. *@
+
+<section class="portada">                    @* section: grupo de contenido relacionado *@
+    <h1>Cartelera de la semana</h1>          @* h1: titulo principal, uno solo por pagina *@
+    <p class="entrada">
+        @* La arroba imprime el valor: aqui se pregunta el total a la lista enlazada. *@
+        Hay <strong>@Model.Peliculas.Cantidad</strong> peliculas en cartelera.
+    </p>
+</section>
+
+@* @if es el if de C# con arroba adelante. Se evalua en el SERVIDOR: *@
+@* la rama que no se cumple ni siquiera llega al navegador.          *@
+@if (Model.Peliculas.EstaVacia)
+{
+    <p class="vacio">Todavia no hay peliculas registradas.</p>   @* dentro de las llaves se escribe HTML normal *@
+}
+else
+{
+    <div class="rejilla">                    @* contenedor que CSS convierte en cuadricula de tarjetas *@
+
+        @* @foreach recorre el TDA propio. Funciona porque ListaPeliculas    *@
+        @* tiene un metodo GetEnumerator(); no se uso ningun arreglo ni List. *@
+        @foreach (var pelicula in Model.Peliculas)
+        {
+            <article class="tarjeta">        @* article: contenido con sentido por si mismo *@
+
+                @* src mezcla texto fijo con C#; alt es lo que se lee si la imagen falla; *@
+                @* width y height reservan el espacio y evitan que la pagina salte al cargar. *@
+                <img src="/img/@pelicula.Poster" alt="Afiche de @pelicula.Titulo" width="300" height="420">
+
+                <div class="tarjeta-texto">
+                    <h2>@pelicula.Titulo</h2>                       @* h2: segundo nivel de jerarquia, no "letra mediana" *@
+                    <p class="etiqueta">@pelicula.Genero</p>
+                    <p class="datos">
+                        @* Propiedad calculada dentro de la clase Pelicula: la vista no hace la cuenta. *@
+                        @pelicula.DuracionEnTexto &middot; Clasificacion @pelicula.Clasificacion
+                    </p>
+                    @* El Id viaja en la URL para que la pagina Detalle sepa cual mostrar. *@
+                    <a class="boton" href="/Detalle?id=@pelicula.Id">Ver detalle</a>
+                </div>
+
+            </article>
+        }
+
+    </div>
+}

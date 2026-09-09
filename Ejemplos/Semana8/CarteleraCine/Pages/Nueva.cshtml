@@ -1,0 +1,115 @@
+@page
+@model NuevaModel
+
+@*  =========================================================================
+    ARCHIVO:   Pages/Nueva.cshtml
+
+    QUE ES:    El formulario para agregar una pelicula, mas una tabla con lo
+               que ya esta registrado. Responde en  /Nueva
+
+    POR QUE
+    EXISTE:    Es la pagina donde entran datos al sistema. Reune casi todo lo
+               visto de formularios: label, tipos de input, atributos de
+               validacion, select, textarea y el envio por POST.
+
+    QUE SE
+    HACE AQUI: Dibujar los controles y mostrar el resultado. Quien recibe y
+               valida los datos es Nueva.cshtml.cs, no este archivo.
+
+    DETALLE INTERESANTE:
+               La tabla del final NO usa @foreach: recorre la lista enlazada a
+               mano, nodo por nodo, con un while. Se dejo asi a proposito para
+               que se vea que las dos formas son validas y que por dentro
+               siempre es el mismo recorrido.
+    ========================================================================= *@
+
+@{
+    ViewData["Title"] = "Agregar pelicula";
+}
+
+<h1>Agregar una pelicula</h1>
+
+@* Solo se dibuja si el servidor dejo un mensaje. Si Error es null, este bloque no existe. *@
+@if (Model.Error != null)
+{
+    <p class="error">@Model.Error</p>
+}
+
+@* method="post" hace que los datos viajen en el cuerpo de la peticion y no en la URL. *@
+@* Sin atributo action se envian a esta misma pagina, o sea al metodo OnPost del .cshtml.cs. *@
+<form method="post" class="formulario">
+
+    <div class="campo">
+        @* for apunta al id del control: al hacer clic en la etiqueta se enfoca el campo. *@
+        <label for="titulo">Titulo</label>
+        @* name debe coincidir con la propiedad [BindProperty]; sin name el dato NO se envia. *@
+        @* placeholder es solo una pista y desaparece al escribir: no reemplaza al label. *@
+        @* required impide enviar el campo vacio; maxlength limita la cantidad de caracteres. *@
+        <input type="text" id="titulo" name="Titulo" placeholder="Nombre de la pelicula" maxlength="60" required>
+    </div>
+
+    <div class="campo">
+        <label for="genero">Genero</label>
+        @* value deja el campo con un valor inicial ya escrito. *@
+        <input type="text" id="genero" name="Genero" value="Drama">
+    </div>
+
+    <div class="campo">
+        <label for="duracion">Duracion (minutos)</label>
+        @* type="number" muestra flechas y teclado numerico en el celular; min y max acotan el rango. *@
+        <input type="number" id="duracion" name="Duracion" min="30" max="300" value="90" required>
+    </div>
+
+    <div class="campo">
+        <label for="clasificacion">Clasificacion</label>
+        <select id="clasificacion" name="Clasificacion">      @* lista desplegable *@
+            @* value es lo que viaja al servidor; el texto de adentro es lo que lee el usuario. *@
+            <option value="A">A - todo publico</option>
+            <option value="B">B - mayores de 12</option>
+            <option value="C">C - mayores de 18</option>
+        </select>
+    </div>
+
+    <div class="campo campo-ancho">
+        <label for="sinopsis">Sinopsis</label>
+        @* textarea es para texto de varias lineas y su contenido va ENTRE las etiquetas, no en value. *@
+        <textarea id="sinopsis" name="Sinopsis" rows="3" placeholder="De que trata la pelicula"></textarea>
+    </div>
+
+    <button type="submit" class="boton">Guardar</button>      @* dispara el envio del formulario *@
+</form>
+
+<h2>Ya registradas</h2>
+
+<table class="listado">                      @* aqui si hay datos tabulares: cada fila es una pelicula *@
+    <thead>                                  @* cabecera de la tabla *@
+        <tr>
+            <th>Codigo</th>
+            <th>Titulo</th>
+            <th>Genero</th>
+            <th>Duracion</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @* RECORRIDO MANUAL DE LA LISTA ENLAZADA.
+           Es exactamente el mismo while que ya escriben en consola:
+           se arranca en el primer nodo y se avanza hasta que no haya siguiente. *@
+        @{
+            var nodo = Model.Peliculas.Primero;   // el primer eslabon de la cadena
+        }
+
+        @while (nodo != null)                     // mientras quede nodo por visitar
+        {
+            <tr>
+                <td>@nodo.Dato.Id</td>            @* Dato es la pelicula que guarda el nodo *@
+                <td>@nodo.Dato.Titulo</td>
+                <td>@nodo.Dato.Genero</td>
+                <td>@nodo.Dato.Duracion min</td>
+            </tr>
+
+            nodo = nodo.Siguiente;                // se avanza un eslabon; sin esta linea el ciclo no termina
+        }
+
+    </tbody>
+</table>

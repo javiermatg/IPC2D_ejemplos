@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!-- Version de .NET contra la que se compila. Debe coincidir con el SDK instalado. -->
+    <!-- Si el SDK es 9.x aqui va net9.0; si es 10.x, net10.0. -->
+    <TargetFramework>net9.0</TargetFramework>
+    <!-- Evita las advertencias de tipos nulos, para no distraer en clase. -->
+    <Nullable>disable</Nullable>
+    <!-- Agrega los using mas comunes de forma automatica (System, System.Linq, etc.). -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>CarteleraCine</RootNamespace>
+  </PropertyGroup>
+
+</Project>
