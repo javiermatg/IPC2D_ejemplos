@@ -1,0 +1,40 @@
+@* =========================================================================
+   ARCHIVO:   Views/Home/Index.cshtml
+
+   QUE ES:    La pagina de bienvenida. Responde en la direccion raiz  /
+
+   POR QUE
+   EXISTE:    Esta carpeta se llama Home porque la atiende HomeController, y
+              el archivo se llama Index porque lo devuelve la accion Index().
+              Es el ejemplo mas corto de la convencion
+              Views/<Controlador>/<Accion>.cshtml.
+
+   QUE SE
+   HACE AQUI: Solo mostrar texto y dos enlaces. No recibe datos: fijense que
+              no tiene linea @model.
+   ========================================================================= *@
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="portada">
+    <h1>Libreria IPC2</h1>
+    <p class="entrada">
+        Ejemplo de ASP.NET Core MVC de la Semana 10. La misma idea de la
+        Semana 8, pero repartida en Modelo, Vista y Controlador.
+    </p>
+
+    <p>
+        <a class="boton" asp-controller="Libros" asp-action="Index">Ver el catalogo</a>
+    </p>
+</section>
+
+<section class="aviso">
+    <h2>Las tres direcciones que llegan aqui</h2>
+    <p>
+        Esta misma pagina responde en <code>/</code>, en <code>/Home</code> y en
+        <code>/Home/Index</code>. No hay tres archivos: hay una plantilla de
+        ruteo con valores por omision.
+    </p>
+</section>

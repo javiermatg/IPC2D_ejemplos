@@ -1,0 +1,63 @@
+@* =========================================================================
+   ARCHIVO:   Views/Shared/_Layout.cshtml
+
+   QUE ES:    El esqueleto HTML del sitio: lo que se repite en todas las
+              paginas (el head, el encabezado, el menu y el pie).
+
+   POR QUE
+   EXISTE:    Esta en Shared porque no le pertenece a ningun controlador: lo
+              usan todos. Cambiar aqui el texto del pie lo cambia en las
+              cinco pantallas a la vez.
+
+   QUE SE
+   HACE AQUI: Solo estructura comun. El contenido propio de cada pagina entra
+              en @RenderBody().
+
+   EL GUION
+   BAJO:      Los archivos que empiezan con _ son piezas de apoyo, no paginas.
+              Nadie puede pedir /Shared/_Layout en el navegador.
+   ========================================================================= *@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @* ViewData es una bolsa de datos sueltos que la vista le pasa al layout.
+       Cada pagina escribe ViewData["Title"] y aqui se lee. El ?? pone un
+       valor de repuesto por si la pagina se olvido de ponerlo. *@
+    <title>@(ViewData["Title"] ?? "Libreria") &ndash; Libreria IPC2</title>
+
+    @* La ruta arranca con / porque es relativa a wwwroot. El archivo esta en
+       wwwroot/css/estilos.css y lo entrega UseStaticFiles, sin pasar por
+       ningun controlador. *@
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+
+    <header class="barra">
+        <a class="marca" asp-controller="Home" asp-action="Index">Libreria IPC2</a>
+
+        <nav>
+            @* asp-controller y asp-action arman la direccion a partir de la
+               plantilla de ruteo, en vez de escribirla a mano. Si manana el
+               controlador cambia de nombre, esto se corrige solo. *@
+            <a asp-controller="Libros" asp-action="Index">Catalogo</a>
+            <a asp-controller="Libros" asp-action="Nueva">Agregar libro</a>
+        </nav>
+    </header>
+
+    <main>
+        @* Aqui se inserta el contenido de la vista que se esta mostrando.
+           Es el unico lugar donde cambia la pagina. *@
+        @RenderBody()
+    </main>
+
+    <footer>
+        Introduccion a la Programacion y Computacion 2 &middot; Semana 10 &middot;
+        Ejemplo de ASP.NET Core MVC
+    </footer>
+
+</body>
+</html>

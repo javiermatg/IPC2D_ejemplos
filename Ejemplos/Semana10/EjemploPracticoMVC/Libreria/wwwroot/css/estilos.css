@@ -1,0 +1,267 @@
+/* ===========================================================================
+   ARCHIVO:   wwwroot/css/estilos.css
+
+   QUE ES:    Todos los estilos del sitio, en un solo archivo.
+
+   POR QUE
+   EXISTE:    Esta en wwwroot porque es un archivo ESTATICO: el navegador lo
+              descarga tal cual, sin que ningun controlador intervenga. Lo
+              entrega la linea app.UseStaticFiles() de Program.cs.
+
+   QUE SE
+   HACE AQUI: Solo apariencia. Ninguna regla de negocio.
+
+   OJO:       El proyecto que crea  dotnet new mvc  trae Bootstrap y jQuery en
+              wwwroot/lib. Aqui se borraron a proposito: para la clase estorba
+              mas de lo que ayuda, y el tema de hoy es MVC, no CSS.
+   =========================================================================== */
+
+/* Variables: se definen una vez y se usan en todo el archivo.
+   Cambiar --acento cambia el color de todo el sitio de un solo golpe. */
+:root {
+    --tinta:      #1f2430;
+    --papel:      #f7f6f3;
+    --acento:     #b45309;
+    --acento-sua: #fdf1e3;
+    --borde:      #ddd8cf;
+    --verde:      #15803d;
+    --rojo:       #b91c1c;
+}
+
+* {
+    box-sizing: border-box;   /* el ancho incluye el relleno y el borde */
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    color: var(--tinta);
+    background: var(--papel);
+    line-height: 1.55;
+}
+
+/* ----- Barra superior (viene del _Layout) ------------------------------- */
+.barra {
+    display: flex;                     /* pone la marca y el menu en una fila */
+    justify-content: space-between;    /* uno a cada extremo */
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.5rem;
+    background: var(--tinta);
+    color: #fff;
+}
+
+.barra a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1.1rem;
+}
+
+.barra a:hover {
+    text-decoration: underline;        /* pseudo-clase: solo al pasar el mouse */
+}
+
+.marca {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+main {
+    max-width: 62rem;                  /* ancho comodo de lectura */
+    margin: 0 auto;                    /* centra el bloque */
+    padding: 1.5rem;
+}
+
+footer {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border-top: 1px solid var(--borde);
+    font-size: 0.85rem;
+    color: #6b6b6b;
+}
+
+/* ----- Portada y avisos -------------------------------------------------- */
+h1 {
+    font-size: 1.9rem;
+    margin: 0 0 0.4rem;
+}
+
+.entrada {
+    color: #5b5b5b;
+    margin-top: 0;
+}
+
+.aviso {
+    background: var(--acento-sua);
+    border-left: 4px solid var(--acento);
+    padding: 0.8rem 1rem;
+    margin-top: 2rem;
+}
+
+.aviso h2 {
+    font-size: 1rem;
+    margin: 0 0 0.3rem;
+}
+
+code {
+    background: #eceae5;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+/* ----- Rejilla de tarjetas (el listado) --------------------------------- */
+.rejilla {
+    display: grid;
+    /* Tantas columnas como quepan, de 15rem minimo. Sin media queries. */
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.tarjeta {
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.tarjeta h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.2rem;
+}
+
+.autor {
+    color: var(--acento);
+    font-weight: 600;
+    margin: 0 0 0.4rem;
+}
+
+.datos {
+    font-size: 0.85rem;
+    color: #6b6b6b;
+    margin: 0 0 0.6rem;
+}
+
+.precio {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.3rem;
+}
+
+.disponible { color: var(--verde); font-size: 0.85rem; margin: 0 0 0.8rem; }
+.agotado    { color: var(--rojo);  font-size: 0.85rem; margin: 0 0 0.8rem; }
+
+.vacio {
+    background: #fff;
+    border: 1px dashed var(--borde);
+    padding: 1.5rem;
+    text-align: center;
+    color: #6b6b6b;
+}
+
+/* ----- Botones ----------------------------------------------------------- */
+.boton {
+    display: inline-block;
+    margin-top: auto;                  /* empuja el boton al fondo de la tarjeta */
+    align-self: flex-start;
+    background: var(--acento);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.45rem 0.9rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.boton:hover { background: #92400e; }
+
+.boton.secundario {
+    background: #fff;
+    color: var(--tinta);
+    border: 1px solid var(--borde);
+    margin-left: 0.4rem;
+}
+
+/* ----- Ficha de detalle -------------------------------------------------- */
+.ficha {
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.tabla-datos {
+    border-collapse: collapse;         /* une los bordes en una sola linea */
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.tabla-datos th,
+.tabla-datos td {
+    border-bottom: 1px solid var(--borde);
+    padding: 0.5rem 0.4rem;
+    text-align: left;
+}
+
+.tabla-datos th {
+    width: 10rem;
+    color: #6b6b6b;
+    font-weight: 600;
+}
+
+/* ----- Formulario -------------------------------------------------------- */
+.formulario {
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 32rem;
+}
+
+.campo {
+    margin-bottom: 0.9rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.campo input {
+    padding: 0.5rem;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.campo input:focus {
+    outline: 2px solid var(--acento);  /* se ve al navegar con el tabulador */
+    outline-offset: 1px;
+}
+
+/* Mensajes que deja ModelState. Se ven solo cuando el servidor rechaza. */
+.error {
+    color: var(--rojo);
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+}
+
+.errores ul {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+    color: var(--rojo);
+}
+
+.errores ul:empty {
+    display: none;                     /* sin errores, el bloque no ocupa espacio */
+}

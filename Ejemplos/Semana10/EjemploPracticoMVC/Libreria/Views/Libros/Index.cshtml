@@ -1,0 +1,87 @@
+@model Catalogo
+
+@* =========================================================================
+   ARCHIVO:   Views/Libros/Index.cshtml
+
+   QUE ES:    El listado del catalogo. Responde en  /Libros
+
+   POR QUE
+   EXISTE:    Es la V de MVC y la vista que mejor muestra lo importante de
+              Razor: el HTML de las tarjetas no se escribe a mano, lo genera
+              el servidor recorriendo los datos. Hay cuatro tarjetas porque
+              hay cuatro libros; si manana hay cuarenta, este archivo no
+              cambia ni una letra.
+
+   QUE SE
+   HACE AQUI: Solo mostrar. No se busca, no se valida y no se calcula nada:
+              eso ya lo hicieron el controlador y el modelo.
+
+   LA PRIMERA
+   LINEA:     @model Catalogo  declara QUE recibe esta vista. Es lo que hace
+              que @Model exista y que el editor autocomplete sus propiedades.
+              Si el controlador manda otra cosa, el error sale al compilar y
+              no frente al usuario: para eso sirve una vista tipada.
+   ========================================================================= *@
+
+@{
+    ViewData["Title"] = "Catalogo";   @* lo lee el _Layout para el <title> de la pestana *@
+}
+
+<section class="portada">
+    <h1>Catalogo de la libreria</h1>
+    <p class="entrada">
+        @* La arroba imprime el valor. Cantidad es una propiedad del modelo:
+           la vista pregunta, no cuenta. *@
+        Hay <strong>@Model.Cantidad</strong> libros registrados.
+    </p>
+</section>
+
+@* @if es el if de C# con arroba adelante, y se evalua en el SERVIDOR:
+   la rama que no se cumple ni siquiera llega al navegador. *@
+@if (Model.EstaVacio)
+{
+    <p class="vacio">Todavia no hay libros en el catalogo.</p>
+}
+else
+{
+    <div class="rejilla">
+
+        @* @foreach recorre el catalogo, que por dentro es una lista enlazada
+           hecha a mano. Funciona porque Catalogo tiene un GetEnumerator()
+           propio que devuelve un RecorridoLibros (con Current y MoveNext);
+           la vista jamas se entera de que adentro hay nodos. *@
+        @foreach (Libro libro in Model)
+        {
+            <article class="tarjeta">
+
+                <h2>@libro.Titulo</h2>
+                <p class="autor">@libro.Autor</p>
+                <p class="datos">
+                    @libro.Editorial &middot; ISBN @libro.Isbn
+                </p>
+
+                <p class="precio">@libro.PrecioEnTexto</p>
+
+                @* Otro @if, ahora adentro del ciclo. HayExistencias es una
+                   propiedad calculada del modelo: la regla vive en Libro.cs
+                   y aqui solo se consulta. *@
+                @if (libro.HayExistencias)
+                {
+                    <p class="disponible">Disponible (@libro.Existencias)</p>
+                }
+                else
+                {
+                    <p class="agotado">Agotado</p>
+                }
+
+                @* asp-action dice a que metodo ir y asp-route-id llena el
+                   pedazo {id?} de la plantilla de ruteo. El HTML que llega al
+                   navegador termina siendo
+                   <a href="/Libros/Detalle/9788437604947">. *@
+                <a class="boton" asp-action="Detalle" asp-route-id="@libro.Isbn">Ver detalle</a>
+
+            </article>
+        }
+
+    </div>
+}

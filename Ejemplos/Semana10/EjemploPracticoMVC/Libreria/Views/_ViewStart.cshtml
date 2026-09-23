@@ -1,0 +1,18 @@
+@* =========================================================================
+   ARCHIVO:   Views/_ViewStart.cshtml
+
+   QUE ES:    Un archivo que Razor ejecuta ANTES de cada vista.
+
+   POR QUE
+   EXISTE:    Para decir, en un solo lugar, cual es la plantilla comun del
+              sitio. Sin esto habria que repetir la linea Layout en cada
+              .cshtml, o peor, copiar el encabezado y el menu en cada pagina.
+
+   QUE SE
+   HACE AQUI: Elegir el layout. Cualquier vista puede desobedecer poniendo su
+              propio Layout, o quitarlo con  Layout = null.
+   ========================================================================= *@
+
+@{
+    Layout = "_Layout";          @* Razor lo busca en Views/Shared/_Layout.cshtml *@
+}

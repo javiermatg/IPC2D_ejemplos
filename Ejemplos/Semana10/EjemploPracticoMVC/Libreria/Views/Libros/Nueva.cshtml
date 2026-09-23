@@ -1,0 +1,98 @@
+@model Libro
+
+@* =========================================================================
+   ARCHIVO:   Views/Libros/Nueva.cshtml
+
+   QUE ES:    El formulario para agregar un libro. Responde en  /Libros/Nueva
+
+   POR QUE
+   EXISTE:    Es la vista que cierra el circulo: hasta aqui los datos solo
+              salian del servidor hacia el navegador. Esta es la primera vez
+              que viajan de regreso.
+
+   QUE SE
+   HACE AQUI: Dibujar los campos y mostrar los errores que devolvio el
+              servidor. La decision de aceptar o rechazar NO esta aqui: esta
+              en LibrosController.Nueva con [HttpPost].
+
+   UN ARCHIVO,
+   DOS USOS:  Esta misma vista se muestra dos veces. La primera con el objeto
+              vacio que manda la accion [HttpGet]. La segunda, si algo estaba
+              mal, con el objeto que el usuario escribio, para que no pierda
+              lo que ya habia llenado.
+   ========================================================================= *@
+
+@{
+    ViewData["Title"] = "Agregar libro";
+}
+
+<section class="portada">
+    <h1>Agregar un libro</h1>
+    <p class="entrada">
+        Los datos se revisan en el servidor, no en el navegador.
+    </p>
+</section>
+
+@* El form sin asp-action envia a la MISMA direccion de donde vino,
+   /Libros/Nueva, pero con method="post". Esa es la unica diferencia entre
+   pedir el formulario y enviarlo, y es lo que separa a los dos metodos del
+   controlador. *@
+<form method="post" class="formulario">
+
+    @* Muestra en un solo bloque todos los mensajes que dejo ModelState:
+       tanto los de las DataAnnotations de Libro.cs como el del ISBN repetido
+       que el controlador agrega a mano. *@
+    <div asp-validation-summary="All" class="errores"></div>
+
+    <div class="campo">
+        @* asp-for hace tres cosas de un golpe:
+             - escribe  name="Isbn"  (el nombre con el que viaja el dato)
+             - escribe  id="Isbn"    (para que el label lo encuentre)
+             - pone el valor actual de Model.Isbn
+           Ese name es la pieza clave: el model binding arma el objeto Libro
+           emparejando cada name con la propiedad que se llama igual. *@
+        <label asp-for="Isbn">ISBN</label>
+        <input asp-for="Isbn" placeholder="9788437604947">
+        <span asp-validation-for="Isbn" class="error"></span>
+    </div>
+
+    <div class="campo">
+        <label asp-for="Titulo">Titulo</label>
+        <input asp-for="Titulo" placeholder="Rayuela">
+        <span asp-validation-for="Titulo" class="error"></span>
+    </div>
+
+    <div class="campo">
+        <label asp-for="Autor">Autor</label>
+        <input asp-for="Autor" placeholder="Julio Cortazar">
+        <span asp-validation-for="Autor" class="error"></span>
+    </div>
+
+    <div class="campo">
+        <label asp-for="Editorial">Editorial</label>
+        <input asp-for="Editorial" placeholder="Catedra">
+    </div>
+
+    <div class="campo">
+        @* asp-for tambien deduce el tipo: como Precio es double, escribe
+           type="number" step="any" sin que haya que decirlo. *@
+        <label asp-for="Precio">Precio (Q)</label>
+        <input asp-for="Precio">
+        <span asp-validation-for="Precio" class="error"></span>
+    </div>
+
+    <div class="campo">
+        <label asp-for="Existencias">Existencias</label>
+        <input asp-for="Existencias">
+        <span asp-validation-for="Existencias" class="error"></span>
+    </div>
+
+    @* El boton que envia. type="submit" es lo que dispara el POST. *@
+    <button type="submit" class="boton">Guardar libro</button>
+    <a class="boton secundario" asp-action="Index">Cancelar</a>
+
+    @* NOTA: el <form> tambien lleva un campo oculto que nadie escribio, con
+       un token de seguridad. Lo pone el tag helper solo, y es el que revisa
+       el atributo [ValidateAntiForgeryToken] del controlador. Se puede ver
+       con clic derecho, Ver codigo fuente. *@
+</form>

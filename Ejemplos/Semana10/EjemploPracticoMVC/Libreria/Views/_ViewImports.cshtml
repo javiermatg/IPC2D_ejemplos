@@ -1,0 +1,27 @@
+@* =========================================================================
+   ARCHIVO:   Views/_ViewImports.cshtml
+
+   QUE ES:    Un archivo que NO se muestra. Razor lo pega al inicio de todas
+              las vistas de esta carpeta y de las de adentro.
+
+   POR QUE
+   EXISTE:    Para no repetir las mismas dos lineas en cada .cshtml. Lo que
+              se escriba aqui vale para Index, Detalle, Nueva y las que
+              vengan.
+
+   QUE SE
+   HACE AQUI: Solo directivas. Nunca HTML: lo que se ponga aqui no se dibuja
+              en ninguna parte.
+
+   OJO:       Si se borra la linea de addTagHelper, los asp-for y asp-action
+              dejan de funcionar y se escriben en el HTML tal cual, como si
+              fueran atributos inventados. Es una falla silenciosa: no da
+              error, simplemente deja de generar los enlaces.
+   ========================================================================= *@
+
+@using Libreria                  @* para no escribir el nombre completo de las clases *@
+@using Libreria.Models           @* asi la vista puede decir  @model Catalogo  a secas *@
+
+@* Activa los tag helpers: las etiquetas que entienden atributos asp-*.
+   Son lo que convierte  <a asp-action="Detalle">  en un enlace de verdad. *@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
