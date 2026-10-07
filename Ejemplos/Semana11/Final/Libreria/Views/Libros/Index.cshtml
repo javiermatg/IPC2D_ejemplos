@@ -1,0 +1,94 @@
+@model CatalogoViewModel
+
+@* =========================================================================
+   ARCHIVO:   Views/Libros/Index.cshtml
+
+   QUE ES:    El listado del catalogo. Responde en  /Libros  y en
+              /Libros?texto=asturias
+
+   SEMANA 11: cambio lo que recibe. Antes era  @model Catalogo ; ahora es un
+              ViewModel con los libros, el texto buscado y los totales.
+              Ademas:
+                - cada tarjeta se dibuja con la parcial _TarjetaLibro
+                - trae su propio JavaScript por la seccion Scripts
+                - tiene DOS buscadores para comparar:
+                    * el formulario (GET) busca en el SERVIDOR: recarga la
+                      pagina y el filtro lo hace Catalogo.Filtrar en C#
+                    * la caja "Filtrar mientras escribe" filtra en el
+                      CLIENTE: catalogo.js esconde tarjetas sin pedir nada
+                      al servidor
+
+   QUE SE
+   HACE AQUI: Solo mostrar. No se busca ni se cuenta nada: eso ya lo hicieron
+              el controlador y el modelo.
+   ========================================================================= *@
+
+@{
+    ViewData["Title"] = "Catalogo";
+}
+
+<section class="portada">
+    <h1>Catalogo de la libreria</h1>
+
+    @* Los totales vienen calculados en el ViewModel. *@
+    <p class="resumen">
+        <span class="chip">Total: @Model.Total</span>
+        <span class="chip verde">Disponibles: @Model.Disponibles</span>
+        <span class="chip rojo">Agotados: @Model.Agotados</span>
+    </p>
+</section>
+
+@* ----- Buscador del SERVIDOR -------------------------------------------- *@
+@* method="get": los datos viajan en la URL (?texto=...), y el model binding
+   los pone en el parametro texto de LibrosController.Index. *@
+<form method="get" asp-action="Index" class="buscador">
+    <input type="search" name="texto" value="@Model.Texto"
+           placeholder="Buscar por titulo o autor (servidor)">
+    <button type="submit" class="boton">Buscar</button>
+
+    @if (Model.HayFiltro)
+    {
+        <a class="boton secundario" asp-action="Index">Quitar filtro</a>
+    }
+</form>
+
+@if (Model.HayFiltro)
+{
+    <p class="entrada">
+        Resultado de buscar <strong>"@Model.Texto"</strong>:
+        @Model.Encontrados de @Model.Total libros.
+    </p>
+}
+
+@* ----- Filtro del CLIENTE ----------------------------------------------- *@
+@* Este input no esta dentro de un form: nunca se envia. Lo escucha
+   catalogo.js con addEventListener("input", ...). *@
+<div class="filtro-vivo">
+    <label for="filtro">Filtrar mientras escribe (navegador):</label>
+    <input id="filtro" type="search" placeholder="Escriba parte del titulo o autor">
+    <span id="contador" class="contador"></span>
+</div>
+
+@if (Model.Encontrados == 0)
+{
+    <p class="vacio">No hay libros que coincidan.</p>
+}
+else
+{
+    <div class="rejilla" id="rejilla">
+        @foreach (Libro libro in Model.Libros)
+        {
+            @* Vista parcial: el mismo HTML de tarjeta para cada libro.
+               model="libro" es lo que recibe la parcial como @Model. *@
+            <partial name="_TarjetaLibro" model="libro" />
+        }
+    </div>
+}
+
+@* ----- La seccion Scripts ----------------------------------------------- *@
+@* Todo lo que se escribe aqui NO se dibuja en este lugar: se inserta donde
+   el _Layout puso RenderSectionAsync("Scripts"), al final del body. Asi el
+   script corre cuando las tarjetas ya existen. *@
+@section Scripts {
+    <script src="~/js/catalogo.js" asp-append-version="true"></script>
+}

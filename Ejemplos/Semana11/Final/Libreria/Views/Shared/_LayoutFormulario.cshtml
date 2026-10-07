@@ -1,0 +1,51 @@
+@* =========================================================================
+   ARCHIVO:   Views/Shared/_LayoutFormulario.cshtml
+
+   QUE ES:    Un layout ANIDADO: un template que a su vez hereda de _Layout.
+              Lo usan las pantallas de formulario.
+
+   POR QUE
+   EXISTE:    Para mostrar la herencia de templates en tres niveles:
+
+                  _Layout.cshtml               (encabezado, menu, pie)
+                    +-- _LayoutFormulario      (panel lateral de ayuda)
+                          +-- Nueva.cshtml     (los campos del formulario)
+
+              Cada nivel agrega lo suyo y deja un hueco (@RenderBody) para el
+              siguiente.
+
+   QUE SE
+   HACE AQUI: Declarar quien es su padre (Layout = "_Layout"), envolver el
+              contenido en dos columnas y REENVIAR la seccion Scripts: si no
+              se reenvia, el padre nunca la recibe y el JavaScript de la vista
+              no se carga.
+   ========================================================================= *@
+
+@{
+    Layout = "_Layout";          @* este template tambien tiene padre *@
+}
+
+<div class="dos-columnas">
+
+    <div>
+        @RenderBody()            @* aqui entra Nueva.cshtml *@
+    </div>
+
+    <aside class="ayuda">
+        <h2>Antes de guardar</h2>
+        <ul>
+            <li>El ISBN no se puede repetir.</li>
+            <li>El precio va de Q1 a Q3000.</li>
+            <li>El navegador revisa los campos para ayudarle, pero la
+                validacion que cuenta es la del servidor.</li>
+        </ul>
+    </aside>
+
+</div>
+
+@* La seccion llega de la vista hija y se pasa hacia arriba, al _Layout.
+   Sin este bloque, Razor da error: la vista definio "Scripts" y nadie la
+   dibujo. *@
+@section Scripts {
+    @await RenderSectionAsync("Scripts", required: false)
+}

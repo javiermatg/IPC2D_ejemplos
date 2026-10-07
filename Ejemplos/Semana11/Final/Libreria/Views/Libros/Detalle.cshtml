@@ -1,0 +1,66 @@
+@model Libro
+
+@* =========================================================================
+   ARCHIVO:   Views/Libros/Detalle.cshtml
+
+   QUE ES:    La ficha de un solo libro. Responde en
+              /Libros/Detalle/9788437604947
+
+   POR QUE
+   EXISTE:    Para mostrar que dos vistas del mismo controlador reciben cosas
+              distintas. Index recibe el Catalogo completo; esta recibe un
+              Libro. Cada una lo declara en su propia linea @model.
+
+   QUE SE
+   HACE AQUI: Mostrar los datos del libro que el controlador ya busco. Aqui
+              no se pregunta si existe: si no existiera, el controlador habria
+              respondido NotFound() y esta vista jamas se habria ejecutado.
+
+   DE DONDE
+   SALIO:     El ISBN venia en la URL. El ruteo lo puso en el parametro id de
+              la accion, la accion se lo dio al modelo y el modelo devolvio
+              este objeto. Ese es el viaje completo de una peticion.
+   ========================================================================= *@
+
+@{
+    ViewData["Title"] = Model.Titulo;   @* el titulo de la pestana cambia con el libro *@
+}
+
+<article class="ficha">
+
+    <h1>@Model.Titulo</h1>
+    <p class="autor">@Model.Autor</p>
+
+    @* Una tabla es lo correcto aqui: son datos de una entidad, con su
+       encabezado de fila. No se usa para acomodar la pagina. *@
+    <table class="tabla-datos">
+        <tr>
+            <th>ISBN</th>
+            <td>@Model.Isbn</td>
+        </tr>
+        <tr>
+            <th>Editorial</th>
+            <td>@Model.Editorial</td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td>@Model.PrecioEnTexto</td>
+        </tr>
+        <tr>
+            <th>Existencias</th>
+            <td>
+                @Model.Existencias
+                @if (!Model.HayExistencias)
+                {
+                    <span class="agotado">(agotado)</span>
+                }
+            </td>
+        </tr>
+    </table>
+
+    @* Volver al listado. Sin asp-route-id porque Index no recibe parametros. *@
+    <p>
+        <a class="boton" asp-action="Index">Volver al catalogo</a>
+    </p>
+
+</article>

@@ -1,0 +1,80 @@
+@* =========================================================================
+   ARCHIVO:   Views/Shared/_Layout.cshtml
+
+   QUE ES:    El esqueleto HTML del sitio (el "template padre"): lo que se
+              repite en todas las paginas (el head, el encabezado, el menu,
+              el pie y los scripts comunes).
+
+   POR QUE
+   EXISTE:    Esta en Shared porque no le pertenece a ningun controlador: lo
+              usan todos. Cambiar aqui el texto del pie lo cambia en todas
+              las pantallas a la vez.
+
+   QUE SE
+   HACE AQUI: Solo estructura comun. Lo propio de cada pagina entra por dos
+              huecos:
+                - @RenderBody()        el contenido principal de la vista
+                - RenderSectionAsync   bloques con nombre que la vista PUEDE
+                                       llenar (aqui: "Scripts")
+
+   SEMANA 11: se agregaron el logo (archivo estatico en wwwroot/img), el
+              asp-append-version, el script comun sitio.js y la seccion
+              opcional "Scripts".
+   ========================================================================= *@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @* ViewData es una bolsa de datos sueltos que la vista le pasa al layout.
+       Cada pagina escribe ViewData["Title"] y aqui se lee. *@
+    <title>@(ViewData["Title"] ?? "Libreria") &ndash; Libreria IPC2</title>
+
+    @* ~/ significa "la raiz de wwwroot". asp-append-version agrega al final
+       ?v=<huella del archivo>: si el CSS cambia, la huella cambia y el
+       navegador descarga la version nueva en lugar de usar la vieja que
+       tenia guardada en cache. *@
+    <link rel="icon" href="~/img/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="~/css/estilos.css" asp-append-version="true">
+</head>
+<body>
+
+    <header class="barra">
+        <a class="marca" asp-controller="Home" asp-action="Index">
+            @* Una imagen es un archivo estatico como cualquier otro: la
+               entrega UseStaticFiles sin pasar por ningun controlador. *@
+            <img src="~/img/logo.svg" alt="" width="28" height="28">
+            Libreria IPC2
+        </a>
+
+        <nav class="menu">
+            <a asp-controller="Libros" asp-action="Index">Catalogo</a>
+            <a asp-controller="Libros" asp-action="Nueva">Agregar libro</a>
+        </nav>
+    </header>
+
+    <main>
+        @* Aqui se inserta el contenido de la vista que se esta mostrando.
+           Es obligatorio: un layout sin RenderBody da error. *@
+        @RenderBody()
+    </main>
+
+    <footer>
+        Introduccion a la Programacion y Computacion 2 &middot; Semana 11 &middot;
+        Web Development con Razor
+    </footer>
+
+    @* Script COMUN a todas las paginas. defer = descargalo en paralelo pero
+       ejecutalo cuando el HTML ya este completo (asi encuentra los elementos). *@
+    <script src="~/js/sitio.js" asp-append-version="true" defer></script>
+
+    @* Hueco con nombre. La vista hija puede escribir  @section Scripts { ... }
+       y su contenido aparece AQUI, al final del body. required: false porque
+       no todas las paginas traen JavaScript propio. Si fuera true, cada
+       vista estaria obligada a definir la seccion. *@
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

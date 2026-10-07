@@ -1,0 +1,70 @@
+@model Libro
+
+@* =========================================================================
+   ARCHIVO:   Views/Shared/_TarjetaLibro.cshtml
+
+   QUE ES:    Una vista PARCIAL: un pedazo de HTML reutilizable que dibuja la
+              tarjeta de UN libro. No es una pagina: el guion bajo lo indica
+              y nadie puede pedirla por URL.
+
+   POR QUE
+   EXISTE:    El layout reutiliza lo que va ALREDEDOR de las paginas; la
+              parcial reutiliza un bloque que va ADENTRO. Si manana la tarjeta
+              aparece tambien en la pagina de inicio, se llama a esta misma
+              parcial y el HTML no se copia.
+
+   COMO SE
+   USA:       <partial name="_TarjetaLibro" model="libro" />
+
+   INLINES:   Aqui estan los ejemplos de Razor en linea de la Semana 11,
+              numerados del 1 al 5.
+   ========================================================================= *@
+
+@* 1. Expresion EXPLICITA @( ... ) dentro de un atributo: el operador ?: de
+      C# decide que clase CSS extra lleva la tarjeta.
+   2. data-titulo y data-autor: atributos data-* que Razor llena en el
+      servidor y que catalogo.js lee despues en el navegador. Son el puente
+      entre C# y JavaScript. *@
+<article class="tarjeta @(Model.HayExistencias ? "" : "tarjeta-agotada")"
+         data-titulo="@Model.Titulo.ToLower()"
+         data-autor="@Model.Autor.ToLower()">
+
+    <h2>@Model.Titulo</h2>
+    <p class="autor">@Model.Autor</p>
+
+    @* 3. Expresion IMPLICITA: @ seguido de un nombre. Razor la codifica, asi
+          que si el titulo trajera <script>, se mostraria como texto y no se
+          ejecutaria. *@
+    <p class="datos">@Model.Editorial &middot; ISBN @Model.Isbn</p>
+
+    @* 4. Expresion explicita con un calculo: sin los parentesis Razor
+          imprimiria el precio y despues el texto " * 1.12" tal cual. *@
+    <p class="precio">
+        @Model.PrecioEnTexto
+        <small>con IVA: Q @((Model.Precio * 1.12).ToString("0.00"))</small>
+    </p>
+
+    @if (Model.HayExistencias)
+    {
+        <p class="disponible">
+            @if (Model.Existencias == 1)
+            {
+                @* 5a. @: imprime una linea de texto plano dentro de un bloque
+                       de C#, sin envolverla en ninguna etiqueta. *@
+                @:Queda solo 1 ejemplar
+            }
+            else
+            {
+                @* 5b. <text> hace lo mismo para varias lineas; la etiqueta
+                       <text> no llega al navegador. *@
+                <text>Disponible (@Model.Existencias)</text>
+            }
+        </p>
+    }
+    else
+    {
+        <p class="agotado">Agotado</p>
+    }
+
+    <a class="boton" asp-controller="Libros" asp-action="Detalle" asp-route-id="@Model.Isbn">Ver detalle</a>
+</article>
