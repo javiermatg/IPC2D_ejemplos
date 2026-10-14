@@ -1,0 +1,60 @@
+@*
+    ===========================================================================
+    ARCHIVO:   Views/Shared/_Layout.cshtml
+
+    QUE ES:    El marco comun de todas las paginas: encabezado, menu y pie.
+
+    EL MENU:   Sigue los componentes del enunciado. Lo que esta hecho tiene
+               enlace; lo que le toca al estudiante aparece como "pendiente".
+    ===========================================================================
+*@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - SAT DTE</title>
+    <link rel="stylesheet" href="~/css/estilos.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="barra">
+        <a class="marca" asp-controller="Home" asp-action="Index">
+            <span class="marca-sello">DTE</span>
+            <span>Simulador SAT</span>
+        </a>
+
+        <nav class="menu">
+            <a asp-controller="Mensajes" asp-action="Enviar">Enviar mensaje</a>
+            <a asp-controller="Contribuyentes" asp-action="Index">RTU</a>
+
+            @* <details> abre y cierra sin una sola linea de JavaScript. *@
+            <details class="desplegable">
+                <summary>Peticiones</summary>
+                <div class="desplegable-panel">
+                    <span class="pendiente">Consultar contribuyente</span>
+                    <span class="pendiente">Resumen de IVA por fecha y NIT</span>
+                    <span class="pendiente">Resumen por rango de fechas</span>
+                    <span class="pendiente">Graficas</span>
+                    <span class="pendiente">Reporte en PDF</span>
+                </div>
+            </details>
+
+            <span class="pendiente">Ayuda</span>
+            <a class="peligro" asp-controller="Sistema" asp-action="Inicializar">Inicializar</a>
+        </nav>
+    </header>
+
+    <main class="contenido">
+        @if (TempData["Aviso"] != null)
+        {
+            <div class="aviso aviso-@TempData["AvisoTipo"]">@TempData["Aviso"]</div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="pie">
+        IPC2 &middot; Laboratorio &middot; Semana 12 &middot; Ejemplo practico del Proyecto 3
+    </footer>
+</body>
+</html>

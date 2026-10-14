@@ -1,0 +1,11 @@
+[
+  {"NIT": "1234560","nombre": "Distribuidora La Esperanza"},
+  {"NIT": "9876545","nombre": "Farmacia San Juan"},
+  {"NIT": "44556675","nombre": "Tecnologia Chapina, S.A."},
+  {"NIT": "555K","nombre": "Panaderia Don Beto"},
+  {"NIT": "102938474","nombre": "Constructora Volcan de Agua"},
+  {"NIT": "26001101","nombre": "Transportes del Altiplano"},
+  {"NIT": "1234567","nombre": "NIT con verificador equivocado"},
+  {"NIT": "12A4567","nombre": "NIT con una letra en medio"},
+  {"NIT": "","nombre": "NIT vacio"}
+]

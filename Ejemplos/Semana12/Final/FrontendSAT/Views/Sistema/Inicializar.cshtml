@@ -1,0 +1,19 @@
+@*
+    Confirmacion antes de borrar todo. El boton manda un POST: borrar datos
+    nunca se hace con un GET (un enlace).
+*@
+@{
+    ViewData["Title"] = "Inicializar";
+}
+
+<h1>Inicializar el sistema</h1>
+
+<form class="panel panel-peligro" asp-action="Inicializar" method="post">
+    <p>
+        Se enviara <code>POST api/sistema/inicializar</code> a la API.
+        El RTU quedara vacio y se borrara el archivo <code>Datos/rtu.json</code>.
+    </p>
+    <p><strong>Esta accion no se puede deshacer.</strong></p>
+    <button type="submit" class="boton-peligro">Si, dejar el sistema sin datos</button>
+    <a class="boton-sec" asp-controller="Home" asp-action="Index">Cancelar</a>
+</form>

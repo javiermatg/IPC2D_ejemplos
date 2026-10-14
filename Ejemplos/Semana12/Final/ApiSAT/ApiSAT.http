@@ -1,0 +1,51 @@
+# ===========================================================================
+#  ApiSAT.http
+#
+#  Peticiones listas para probar la API SIN el frontend.
+#  En Visual Studio o en VS Code (extension REST Client) aparece
+#  "Send Request" encima de cada una. Es lo mismo que hace Postman.
+#
+#  Las peticiones se separan con  ###
+#  Primero hay que encender la API:  dotnet run  (dentro de ApiSAT)
+# ===========================================================================
+
+@api = http://localhost:5090
+
+### 1) Esta encendida?
+GET {{api}}/
+
+### 2) Mensaje del enunciado: 2 NITs validos y 1 invalido (5123456)
+POST {{api}}/api/rtu
+Content-Type: application/json
+
+[
+  {"NIT": "7378106", "nombre": "Empresa ABC, S.A."},
+  {"NIT": "8338817", "nombre": "Comercial XYZ, S.A."},
+  {"NIT": "5123456", "nombre": "Servicios Integrales del Norte"}
+]
+
+### 3) Todo el RTU
+GET {{api}}/api/rtu
+
+### 4) Un NIT que existe -> 200
+GET {{api}}/api/rtu/7378106
+
+### 5) Un NIT que no existe -> 404
+GET {{api}}/api/rtu/5123456
+
+### 6) JSON mal escrito (falta una coma) -> 400 automatico de [ApiController]
+POST {{api}}/api/rtu
+Content-Type: application/json
+
+[
+  {"NIT": "7378106" "nombre": "Empresa ABC, S.A."}
+]
+
+### 7) Arreglo vacio -> 400 escrito por nosotros
+POST {{api}}/api/rtu
+Content-Type: application/json
+
+[]
+
+### 8) Volver al estado inicial
+POST {{api}}/api/sistema/inicializar

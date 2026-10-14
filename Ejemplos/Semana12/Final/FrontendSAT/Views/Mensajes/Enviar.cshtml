@@ -1,0 +1,71 @@
+@*
+    ===========================================================================
+    ARCHIVO:   Views/Mensajes/Enviar.cshtml
+
+    QUE ES:    El componente "Enviar mensaje": elegir el .json, mandarlo y ver
+               lo que contesto la API.
+
+    OJO:       enctype="multipart/form-data" es OBLIGATORIO para subir
+               archivos. Sin el, el navegador solo manda el nombre del archivo
+               y el IFormFile del controlador llega en null.
+    ===========================================================================
+*@
+@model EnvioViewModel
+@{
+    ViewData["Title"] = "Enviar mensaje";
+}
+
+<h1>Enviar mensaje</h1>
+
+<form class="panel" asp-action="Enviar" method="post" enctype="multipart/form-data">
+    <fieldset class="tipo">
+        <legend>Tipo de mensaje</legend>
+        <label><input type="radio" name="tipo" value="rtu" checked /> Actualizar RTU</label>
+        <label class="pendiente"><input type="radio" name="tipo" value="autorizaciones" disabled /> Solicitud de autorizaciones</label>
+    </fieldset>
+
+    <label class="campo">
+        Archivo .json
+        @* name="archivo" debe coincidir con el parametro IFormFile archivo del controlador. *@
+        <input type="file" name="archivo" accept=".json,application/json" />
+    </label>
+
+    @if (Model.ErrorArchivo != null)
+    {
+        <p class="http-error">@Model.ErrorArchivo</p>
+    }
+
+    <button type="submit">Enviar a la API</button>
+</form>
+
+@if (Model.Resultado != null)
+{
+    <h2>Resultado de <code>@Model.NombreArchivo</code></h2>
+
+    @if (Model.Resultado.Exito)
+    {
+        <section class="tarjetas">
+            <div class="tarjeta tarjeta-ok">
+                <span class="cifra">@Model.Resultado.Datos.ContribuyentesNuevos</span>
+                <span>contribuyentes nuevos</span>
+            </div>
+            <div class="tarjeta">
+                <span class="cifra">@Model.Resultado.Datos.ContribuyentesActualizados</span>
+                <span>contribuyentes actualizados</span>
+            </div>
+            <div class="tarjeta tarjeta-error">
+                <span class="cifra">@Model.Resultado.Datos.NitsInvalidos</span>
+                <span>NITs invalidos</span>
+            </div>
+        </section>
+    }
+
+    <div class="dos-columnas">
+        <details class="http" open>
+            <summary><span class="codigo c0">enviado</span> Contenido del archivo</summary>
+            <pre class="json">@Model.JsonEnviado</pre>
+        </details>
+
+        <partial name="_RespuestaHttp" model="Model.Resultado" />
+    </div>
+}

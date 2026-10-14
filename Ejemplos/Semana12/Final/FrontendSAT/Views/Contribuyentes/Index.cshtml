@@ -1,0 +1,77 @@
+@*
+    ===========================================================================
+    ARCHIVO:   Views/Contribuyentes/Index.cshtml
+
+    QUE ES:    La tabla del RTU y un buscador por NIT.
+
+    OJO:       El formulario es method="get": al buscar, la URL queda como
+               /Contribuyentes?nit=7378106 y se puede copiar o recargar.
+    ===========================================================================
+*@
+@model ContribuyentesViewModel
+@{
+    ViewData["Title"] = "RTU";
+}
+
+<h1>Registro Tributario Unificado</h1>
+
+<form class="buscador" asp-action="Index" method="get">
+    <input type="text" name="nit" value="@Model.NitBuscado" placeholder="Buscar por NIT, ej. 7378106" />
+    <button type="submit">Buscar</button>
+    @if (!string.IsNullOrWhiteSpace(Model.NitBuscado))
+    {
+        <a class="boton-sec" asp-action="Index">Ver todos</a>
+    }
+</form>
+
+@* ---------- Caso 1: se pidieron todos ---------- *@
+@if (Model.Lista != null)
+{
+    @if (Model.Lista.Exito)
+    {
+        @if (Model.Lista.Datos.Count == 0)
+        {
+            <p class="vacio">El RTU esta vacio. Envie un mensaje desde <a asp-controller="Mensajes" asp-action="Enviar">Enviar mensaje</a>.</p>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead>
+                    <tr><th>#</th><th>NIT</th><th>Nombre</th></tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Lista.Datos.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td class="mono">@Model.Lista.Datos[i].Nit</td>
+                            <td>@Model.Lista.Datos[i].Nombre</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+
+    <partial name="_RespuestaHttp" model="Model.Lista" />
+}
+
+@* ---------- Caso 2: se busco un NIT ---------- *@
+@if (Model.Busqueda != null)
+{
+    @if (Model.Busqueda.Exito)
+    {
+        <div class="tarjetas">
+            <div class="tarjeta tarjeta-ok">
+                <span class="cifra cifra-chica mono">@Model.Busqueda.Datos.Nit</span>
+                <span>@Model.Busqueda.Datos.Nombre</span>
+            </div>
+        </div>
+    }
+    else if (Model.Busqueda.CodigoHttp == 404)
+    {
+        <p class="vacio">El NIT <strong class="mono">@Model.NitBuscado</strong> no esta en el RTU.</p>
+    }
+
+    <partial name="_RespuestaHttp" model="Model.Busqueda" />
+}

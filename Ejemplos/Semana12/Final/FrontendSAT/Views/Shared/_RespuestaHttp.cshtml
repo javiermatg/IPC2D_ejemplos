@@ -1,0 +1,43 @@
+@*
+    ===========================================================================
+    ARCHIVO:   Views/Shared/_RespuestaHttp.cshtml   (vista parcial)
+
+    QUE ES:    Una caja que muestra lo que contesto la API: el codigo de
+               estado y el JSON crudo. Se reutiliza en varias paginas.
+
+    POR QUE
+    EXISTE:    En clase sirve para VER el protocolo: que codigo llego y que
+               texto viajo. En el proyecto real se puede quitar.
+
+    USO:       <partial name="_RespuestaHttp" model="Model.Resultado" />
+    ===========================================================================
+*@
+@model ResultadoApi
+
+@{
+    // Familia del codigo: 2xx exito, 4xx error del cliente, 5xx error del servidor.
+    string familia = Model.CodigoHttp switch
+    {
+        >= 200 and < 300 => "c2xx",
+        >= 400 and < 500 => "c4xx",
+        >= 500 => "c5xx",
+        _ => "c0"
+    };
+}
+
+<details class="http" open="@(!Model.Exito)">
+    <summary>
+        <span class="codigo @familia">@(Model.CodigoHttp == 0 ? "sin respuesta" : Model.CodigoHttp.ToString())</span>
+        Respuesta HTTP de la API
+    </summary>
+
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <p class="http-error">@Model.Error</p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.JsonCrudo))
+    {
+        <pre class="json">@Model.JsonCrudo</pre>
+    }
+</details>

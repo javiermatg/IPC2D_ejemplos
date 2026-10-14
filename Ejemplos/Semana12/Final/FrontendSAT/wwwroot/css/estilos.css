@@ -1,0 +1,392 @@
+/* ===========================================================================
+   ARCHIVO:   wwwroot/css/estilos.css  (FrontendSAT)
+
+   QUE ES:    Todos los estilos del sitio, en un solo archivo estatico.
+
+   OJO:       Sin Bootstrap a proposito: el tema de hoy es HTTP y JSON, no CSS.
+              Cambiar las variables de :root cambia los colores de todo el sitio.
+   =========================================================================== */
+
+:root {
+    --tinta:      #1f2430;
+    --tinta-sua:  #5b6375;
+    --papel:      #f6f7f9;
+    --blanco:     #ffffff;
+    --acento:     #1e3a8a;   /* azul institucional */
+    --acento-sua: #e0e7ff;
+    --rosa:       #db2777;
+    --borde:      #dde1e8;
+    --verde:      #15803d;
+    --verde-sua:  #dcfce7;
+    --ambar:      #b45309;
+    --ambar-sua:  #fef3c7;
+    --rojo:       #b91c1c;
+    --rojo-sua:   #fee2e2;
+    --codigo:     #111827;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    color: var(--tinta);
+    background: var(--papel);
+    line-height: 1.5;
+}
+
+a { color: var(--acento); }
+
+code, .mono {
+    font-family: Consolas, "Cascadia Code", monospace;
+}
+
+/* ----- Encabezado y menu ------------------------------------------------- */
+.barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 32px;
+    background: var(--acento);
+    color: var(--blanco);
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--blanco);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.marca-sello {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--rosa);
+    font-size: .85rem;
+    letter-spacing: .08em;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.menu > a,
+.menu > span,
+.desplegable > summary {
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: var(--blanco);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.menu > a:hover,
+.desplegable > summary:hover {
+    background: rgba(255, 255, 255, .15);
+}
+
+.menu .peligro {
+    border: 1px solid rgba(255, 255, 255, .5);
+}
+
+.desplegable {
+    position: relative;
+}
+
+.desplegable > summary {
+    list-style: none;
+}
+
+.desplegable > summary::after {
+    content: " \25BE";
+}
+
+.desplegable-panel {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 260px;
+    margin-top: 6px;
+    padding: 8px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--blanco);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+}
+
+.desplegable-panel .pendiente {
+    padding: 6px 8px;
+    color: var(--tinta-sua);
+}
+
+/* Lo que le toca hacer al estudiante */
+.pendiente {
+    opacity: .7;
+    cursor: not-allowed !important;
+}
+
+.pendiente::after {
+    content: "pendiente";
+    margin-left: 6px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--ambar-sua);
+    color: var(--ambar);
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+/* ----- Contenido --------------------------------------------------------- */
+.contenido {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 32px 48px;
+}
+
+h1 { margin-top: 0; }
+
+.sub { color: var(--tinta-sua); max-width: 720px; }
+
+.pie {
+    padding: 16px;
+    text-align: center;
+    color: var(--tinta-sua);
+    font-size: .85rem;
+}
+
+/* ----- Diagrama de la portada -------------------------------------------- */
+.flujo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.nodo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 16px;
+    border: 2px solid var(--borde);
+    border-radius: 10px;
+    background: var(--blanco);
+    font-weight: 600;
+}
+
+.nodo small { color: var(--tinta-sua); font-weight: 400; }
+
+.nodo-activo { border-color: var(--rosa); }
+
+.flecha {
+    color: var(--tinta-sua);
+    font-size: .8rem;
+}
+
+.flecha::after { content: " \2192"; font-size: 1.2rem; }
+
+/* ----- Tarjetas de cifras ------------------------------------------------ */
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 20px;
+    border: 1px solid var(--borde);
+    border-left: 6px solid var(--acento);
+    border-radius: 10px;
+    background: var(--blanco);
+    color: var(--tinta);
+    text-decoration: none;
+}
+
+.tarjeta-ok    { border-left-color: var(--verde); }
+.tarjeta-error { border-left-color: var(--rojo); }
+.tarjeta-accion { border-left-color: var(--rosa); }
+.tarjeta-accion:hover { background: var(--acento-sua); }
+
+.cifra {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.cifra-chica { font-size: 1.3rem; }
+
+/* ----- Formularios ------------------------------------------------------- */
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 620px;
+    padding: 20px 24px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    background: var(--blanco);
+}
+
+.panel-peligro { border-color: var(--rojo); }
+
+.tipo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 600;
+}
+
+button,
+.boton-sec {
+    align-self: flex-start;
+    padding: 9px 18px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--acento);
+    color: var(--blanco);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-sec {
+    background: transparent;
+    border: 1px solid var(--borde);
+    color: var(--tinta);
+}
+
+.boton-peligro { background: var(--rojo); }
+
+.buscador {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.buscador input {
+    flex: 1;
+    min-width: 220px;
+    padding: 9px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font: inherit;
+}
+
+/* ----- Tabla ------------------------------------------------------------- */
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--blanco);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tabla th,
+.tabla td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--borde);
+    text-align: left;
+}
+
+.tabla th {
+    background: var(--acento-sua);
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.vacio { color: var(--tinta-sua); }
+
+/* ----- Caja de la respuesta HTTP ----------------------------------------- */
+.dos-columnas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.http {
+    margin: 16px 0;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    background: var(--blanco);
+}
+
+.http > summary {
+    padding: 10px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.codigo {
+    display: inline-block;
+    min-width: 46px;
+    margin-right: 8px;
+    padding: 1px 8px;
+    border-radius: 6px;
+    font-family: Consolas, monospace;
+    text-align: center;
+}
+
+.c2xx { background: var(--verde-sua); color: var(--verde); }
+.c4xx { background: var(--ambar-sua); color: var(--ambar); }
+.c5xx { background: var(--rojo-sua);  color: var(--rojo); }
+.c0   { background: var(--acento-sua); color: var(--acento); }
+
+.http-error {
+    margin: 0 14px 10px;
+    color: var(--rojo);
+    font-weight: 600;
+}
+
+.json {
+    max-height: 360px;
+    margin: 0;
+    padding: 14px;
+    overflow: auto;
+    border-radius: 0 0 10px 10px;
+    background: var(--codigo);
+    color: #e5e7eb;
+    font-family: Consolas, monospace;
+    font-size: .85rem;
+}
+
+/* ----- Avisos (TempData) ------------------------------------------------- */
+.aviso {
+    margin-bottom: 18px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.aviso-ok    { background: var(--verde-sua); color: var(--verde); }
+.aviso-error { background: var(--rojo-sua);  color: var(--rojo); }

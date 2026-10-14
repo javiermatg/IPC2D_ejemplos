@@ -1,0 +1,52 @@
+@*
+    Pagina de inicio. El modelo es la respuesta de  GET api/rtu : con ella se
+    sabe si la API esta encendida y cuantos contribuyentes hay.
+*@
+@model ResultadoApi<List<Contribuyente>>
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="portada">
+    <h1>Autorizacion de Documentos Tributarios Electronicos</h1>
+    <p class="sub">
+        Este sitio es el <strong>frontend</strong>: no guarda datos. Todo lo que muestra se lo pide
+        por HTTP a la <strong>API</strong>, que es otro programa.
+    </p>
+
+    <div class="flujo">
+        <div class="nodo">Navegador</div>
+        <div class="flecha">HTML</div>
+        <div class="nodo nodo-activo">FrontendSAT<small>:5080</small></div>
+        <div class="flecha">JSON</div>
+        <div class="nodo">ApiSAT<small>:5090</small></div>
+        <div class="flecha">archivo</div>
+        <div class="nodo">Datos/rtu.json</div>
+    </div>
+</section>
+
+<section class="tarjetas">
+    @if (Model.Exito)
+    {
+        <div class="tarjeta tarjeta-ok">
+            <span class="cifra">@Model.Datos.Count</span>
+            <span>contribuyentes en el RTU</span>
+        </div>
+        <div class="tarjeta">
+            <span class="cifra cifra-chica">API conectada</span>
+            <span>GET api/rtu respondio @Model.CodigoHttp</span>
+        </div>
+    }
+    else
+    {
+        <div class="tarjeta tarjeta-error">
+            <span class="cifra cifra-chica">API sin conexion</span>
+            <span>@Model.Error</span>
+        </div>
+    }
+
+    <a class="tarjeta tarjeta-accion" asp-controller="Mensajes" asp-action="Enviar">
+        <span class="cifra cifra-chica">Enviar mensaje &rarr;</span>
+        <span>Cargar un archivo .json para actualizar el RTU</span>
+    </a>
+</section>
